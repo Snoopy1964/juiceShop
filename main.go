@@ -26,7 +26,7 @@ func main() {
 func populateTemplates() map[string]*template.Template {
 	//log.Println("poulateTemplates called ...")
 	result := make(map[string]*template.Template)
-	const basePath = "templates"
+	const basePath = "src/github.com/snoopy1964/webapp/templates"
 	layout := template.Must(template.ParseFiles(basePath + "/_layout.html"))
 	template.Must(layout.ParseFiles(basePath+"/_header.html", basePath+"/_footer.html"))
 
