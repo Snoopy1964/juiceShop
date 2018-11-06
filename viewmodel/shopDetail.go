@@ -1,5 +1,7 @@
 package viewmodel
 
+import "github.com/snoopy1964/webapp/model"
+
 // ShopDetail structure
 type ShopDetail struct {
 	Title    string
@@ -7,20 +9,15 @@ type ShopDetail struct {
 	Products []Product
 }
 
-func NewShopDetail() ShopDetail {
-	var result ShopDetail
-	result.Title = "Lemonade Stand Supply - Juice Shop"
-	result.Active = "shop"
-	lemonJuice := MakeLemonJuiceProduct()
-	appleJuice := MakeAppleJuiceProduct()
-	watermelonJuice := MakeWatermelonJuiceProduct()
-	kiwiJuice := MakeKiwiJuiceProduct()
-	mangosteenJuice := MakeMangosteenJuiceProduct()
-	orangeJuice := MakeOrangeJuiceProduct()
-	pinappleJuice := MakePineappleJuiceProduct()
-	strawberryJuice := MakeStrawberryJuiceProduct()
+func NewShopDetail(products []model.Product) ShopDetail {
+	result := ShopDetail{
+		Title:    "Lemonade Stand Supply - Juice Shop",
+		Active:   "shop",
+		Products: []Product{},
+	}
 
-	result.Products = []Product{lemonJuice, appleJuice, watermelonJuice, kiwiJuice, mangosteenJuice, orangeJuice, pinappleJuice, strawberryJuice}
-
+	for _, p := range products {
+		result.Products = append(result.Products, product2VM(p))
+	}
 	return result
 }

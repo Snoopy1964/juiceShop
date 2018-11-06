@@ -1,5 +1,11 @@
 package viewmodel
 
+import (
+	"fmt"
+
+	"github.com/snoopy1964/webapp/model"
+)
+
 // Shop structure
 type Shop struct {
 	Title      string
@@ -17,40 +23,29 @@ type Category struct {
 }
 
 // NewShop is the contructor of a Shop
-func NewShop() Shop {
+func NewShop(categories []model.Category) Shop {
 	result := Shop{
-		Title:  "Lemonade Stand Supply - Shop",
-		Active: "shop",
+		Title:      "Lemonade Stand Supply - Shop",
+		Active:     "shop",
+		Categories: make([]Category, len(categories)),
 	}
-	juiceCategory := Category{
-		URL:      "/shop_details",
-		ImageURL: "img/lemon.png",
-		Title:    "Juices and Mixes",
-		Description: `Explore our wide assortment of juices and mixes expected by
-							today's lemonade stand clientelle. Now featuring a full line of
-							organic juices that are guaranteed to be obtained from trees that
-							have never been treated with pesticides or artificial
-							fertilizers.`,
-		IsOrientedRight: false,
+
+	// log.Println(categories)
+
+	for i := 0; i < len(categories); i++ {
+		// log.Printf("Index i = %v\n", i)
+		vm := category2VM(categories[i])
+		vm.IsOrientedRight = i%2 == 1
+		result.Categories[i] = vm
 	}
-	supplyCategory := Category{
-		URL:      ".",
-		ImageURL: "img/kiwi.png",
-		Title:    "Cups, Straws, and Other Supplies",
-		Description: `From paper cups to bio-degradable plastic to straws and
-						napkins, LSS is your source for the sundries that keep your stand
-						running smoothly.`,
-		IsOrientedRight: true,
-	}
-	advertiseCategory := Category{
-		URL:      ".",
-		ImageURL: "img/pineapple.png",
-		Title:    "Signs and Advertising",
-		Description: `Sure, you could just wait for people to find your stand
-						along the side of the road, but if you want to take it to the next
-						level, our premium line of advertising supplies.`,
-		IsOrientedRight: false,
-	}
-	result.Categories = []Category{juiceCategory, supplyCategory, advertiseCategory}
 	return result
+}
+
+func category2VM(c model.Category) Category {
+	return Category{
+		URL:         fmt.Sprintf("/shop/%v", c.ID),
+		ImageURL:    c.ImageURL,
+		Title:       c.Title,
+		Description: c.Description,
+	}
 }
