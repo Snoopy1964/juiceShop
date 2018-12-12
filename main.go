@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/snoopy1964/webapp/controller"
+	"github.com/Snoopy1964/webapp/controller"
 )
 
 func main() {

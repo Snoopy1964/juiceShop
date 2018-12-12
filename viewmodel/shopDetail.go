@@ -1,6 +1,6 @@
 package viewmodel
 
-import "github.com/snoopy1964/webapp/model"
+import "github.com/Snoopy1964/webapp/model"
 
 // ShopDetail structure
 type ShopDetail struct {

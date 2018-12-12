@@ -3,7 +3,7 @@ package viewmodel
 import (
 	"fmt"
 
-	"github.com/snoopy1964/webapp/model"
+	"github.com/Snoopy1964/webapp/model"
 )
 
 // Shop structure
