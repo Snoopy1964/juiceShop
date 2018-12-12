@@ -24,7 +24,7 @@ func main() {
 }
 
 func populateTemplates() map[string]*template.Template {
-	//log.Println("poulateTemplates called ...")
+	log.Println("Processing template files ...")
 	result := make(map[string]*template.Template)
 	const basePath = "src/github.com/snoopy1964/webapp/templates"
 	layout := template.Must(template.ParseFiles(basePath + "/_layout.html"))
@@ -40,7 +40,9 @@ func populateTemplates() map[string]*template.Template {
 		panic("Failed to load content files of content directory: " + err.Error())
 	}
 	for _, file := range files {
-		log.Println("Open FIle: ", file.Name())
+
+		log.Printf("Processing Template file: %v", file.Name())
+
 		f, err := os.Open(basePath + "/content/" + file.Name())
 		if err != nil {
 			panic("Failed to open template '" + file.Name() + "'")
@@ -58,5 +60,7 @@ func populateTemplates() map[string]*template.Template {
 		}
 		result[file.Name()] = tmpl
 	}
+	log.Println("Processing template files finished!")
+
 	return result
 }
