@@ -4,7 +4,7 @@ import (
 	"html/template"
 	"net/http"
 
-	"github.com/snoopy1964/webapp/viewmodel"
+	"github.com/Snoopy1964/webapp/viewmodel"
 )
 
 type shop struct {

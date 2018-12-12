@@ -37,9 +37,10 @@ func populateTemplates() map[string]*template.Template {
 
 	files, err := dir.Readdir(-1)
 	if err != nil {
-		panic("Failed to load conten files of content directory: " + err.Error())
+		panic("Failed to load content files of content directory: " + err.Error())
 	}
 	for _, file := range files {
+		log.Println("Open FIle: ", file.Name())
 		f, err := os.Open(basePath + "/content/" + file.Name())
 		if err != nil {
 			panic("Failed to open template '" + file.Name() + "'")
