@@ -19,17 +19,10 @@ func (h home) registerRoutes() {
 	http.HandleFunc("/", h.handleHome)
 	http.HandleFunc("/home", h.handleHome)
 	http.HandleFunc("/login", h.handleLogin)
-	http.HandleFunc("/stand-locator", h.handleStandLocator)
 }
 
 func (h home) handleHome(w http.ResponseWriter, r *http.Request) {
 	vm := viewmodel.NewHome()
-	h.homeTemplate.Execute(w, vm)
-}
-
-func (h home) handleStandLocator(w http.ResponseWriter, r *http.Request) {
-	log.Println("handleSTandLocator called: ", r.URL, r.RequestURI)
-	vm := viewmodel.NewStandLocator()
 	h.homeTemplate.Execute(w, vm)
 }
 
