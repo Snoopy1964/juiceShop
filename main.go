@@ -8,6 +8,7 @@ import (
 	"os"
 
 	"github.com/Snoopy1964/webapp/controller"
+	"github.com/Snoopy1964/webapp/middleware"
 )
 
 func main() {
@@ -20,7 +21,7 @@ func main() {
 
 	templates := populateTemplates()
 	controller.Startup(templates)
-	http.ListenAndServe(":8000", nil)
+	http.ListenAndServe(":8000", &middleware.TimeoutMiddleware{new(middleware.GzipMiddleware)})
 }
 
 func populateTemplates() map[string]*template.Template {

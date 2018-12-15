@@ -45,6 +45,7 @@ func (s shop) handleShop(w http.ResponseWriter, r *http.Request) {
 		// log.Println(categories)
 
 		vm := viewmodel.NewShop(categories)
+		w.Header().Add("Content-Type", "text/html")
 		s.shopTemplate.Execute(w, vm)
 	}
 }
