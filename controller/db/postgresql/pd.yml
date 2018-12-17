@@ -1,0 +1,14 @@
+postgres:
+  image: postgres
+  ports:
+    - '5432:5432'
+#  name:
+#    'juiceShopDB'
+  environment:
+    POSTGRES_USER: 'user'
+    POSTGRES_PASSWORD: 'password'
+    POSTGRES_DB: 'accounts'
+  volumes:
+    - ./init:/docker-entrypoint-initdb.d/
+
+ # docker-compose -f pd.yml up   
