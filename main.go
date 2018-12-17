@@ -9,6 +9,8 @@ import (
 
 	"github.com/Snoopy1964/webapp/controller"
 	"github.com/Snoopy1964/webapp/middleware"
+
+	_ "github.com/lib/pq"
 )
 
 func main() {
