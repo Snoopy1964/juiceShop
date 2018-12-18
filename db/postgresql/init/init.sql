@@ -7,3 +7,7 @@ CREATE TABLE accounts (
     passwd varchar(256) NOT NULL,
     PRIMARY KEY(ID)
 );
+
+INSERT INTO accounts VALUES('1001', 'ralf@ehret-family.com', '12345');
+INSERT INTO accounts VALUES('1002', 'conni@ehret-family.com', '54321');
+
