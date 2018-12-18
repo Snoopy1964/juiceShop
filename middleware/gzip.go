@@ -3,7 +3,6 @@ package middleware
 import (
 	"compress/gzip"
 	"io"
-	"log"
 	"net/http"
 	"strings"
 )
@@ -13,8 +12,8 @@ type GzipMiddleware struct {
 }
 
 func (gm *GzipMiddleware) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	log.Println("Processing request ...", r.URL)
-	log.Println("Processing request ...", r.Header)
+	// log.Println("Processing request ...", r.URL)
+	// log.Println("Processing request ...", r.Header)
 	if gm.Next == nil {
 		gm.Next = http.DefaultServeMux
 	}

@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/Snoopy1964/webapp/model"
 	"github.com/Snoopy1964/webapp/viewmodel"
 )
 
@@ -38,10 +39,12 @@ func (h home) handleLogin(w http.ResponseWriter, r *http.Request) {
 		}
 		email := r.Form.Get("email")
 		password := r.Form.Get("password")
-		if email == "ralf@ehret-family.com" && password == "12345" {
+		if user, err := model.Login(email, password); err == nil {
+			log.Printf("User has logged in: %v\n", user)
 			http.Redirect(w, r, "/home", http.StatusTemporaryRedirect)
 			return
 		} else {
+			log.Printf("Failed to log user in with email: %v\n, error was: %v\n", email, err)
 			vm.Email = "please enter valid user"
 			vm.Password = "Please enter valid password"
 		}

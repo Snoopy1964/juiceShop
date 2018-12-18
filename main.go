@@ -1,11 +1,15 @@
 package main
 
 import (
+	"database/sql"
+	"fmt"
 	"html/template"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/Snoopy1964/webapp/model"
 
 	"github.com/Snoopy1964/webapp/controller"
 	"github.com/Snoopy1964/webapp/middleware"
@@ -22,12 +26,24 @@ func main() {
 	log.Println("Working Directory: ", dir)
 
 	templates := populateTemplates()
+	db := connectToDatabase()
+	log.Printf("Connect to database: %v", db)
+	defer db.Close()
 	controller.Startup(templates)
 	http.ListenAndServe(":8000", &middleware.TimeoutMiddleware{new(middleware.GzipMiddleware)})
 }
 
+func connectToDatabase() *sql.DB {
+	db, err := sql.Open("postgres", "postgres://user:password@localhost/accounts?sslmode=disable")
+	if err != nil {
+		log.Fatalln(fmt.Errorf("Unable to connect to database: %v", err))
+	}
+	model.SetDatabase(db)
+	return db
+}
+
 func populateTemplates() map[string]*template.Template {
-	log.Println("Processing template files ...")
+	// log.Println("Processing template files ...")
 	result := make(map[string]*template.Template)
 	const basePath = "src/github.com/snoopy1964/webapp/templates"
 	layout := template.Must(template.ParseFiles(basePath + "/_layout.html"))
@@ -44,7 +60,7 @@ func populateTemplates() map[string]*template.Template {
 	}
 	for _, file := range files {
 
-		log.Printf("Processing Template file: %v", file.Name())
+		// log.Printf("Processing Template file: %v", file.Name())
 
 		f, err := os.Open(basePath + "/content/" + file.Name())
 		if err != nil {
@@ -63,7 +79,7 @@ func populateTemplates() map[string]*template.Template {
 		}
 		result[file.Name()] = tmpl
 	}
-	log.Println("Processing template files finished!")
+	// log.Println("Processing template files finished!")
 
 	return result
 }
