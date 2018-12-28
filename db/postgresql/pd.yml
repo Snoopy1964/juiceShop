@@ -9,7 +9,7 @@ postgres:
   volumes:
     - ./init:/docker-entrypoint-initdb.d/
 
-# docker-compose --name juiceShopDB -f pd.yml up
+# docker-compose -p juiceShopDB -f pd.yml up
 # docker exec -it <Container ID or Name> psql -U user accounts
 
     
