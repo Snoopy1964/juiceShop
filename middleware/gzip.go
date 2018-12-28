@@ -27,9 +27,19 @@ func (gm *GzipMiddleware) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	//w.Header().Add("Content-Type", "text/html")
 	gzipwriter := gzip.NewWriter(w)
 	defer gzipwriter.Close()
-	gzrw := gzipResponseWriter{
-		ResponseWriter: w,
-		Writer:         gzipwriter,
+	var gzrw http.ResponseWriter
+	if pusher, ok := w.(http.Pusher); ok {
+		gzrw = gzipPushResponseWriter{
+			gzipResponseWriter: gzipResponseWriter{
+				ResponseWriter: w,
+				Writer:         gzipwriter,
+			}, Pusher: pusher,
+		}
+	} else {
+		gzrw = gzipResponseWriter{
+			ResponseWriter: w,
+			Writer:         gzipwriter,
+		}
 	}
 	gm.Next.ServeHTTP(gzrw, r)
 }
@@ -37,6 +47,11 @@ func (gm *GzipMiddleware) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 type gzipResponseWriter struct {
 	http.ResponseWriter
 	io.Writer
+}
+
+type gzipPushResponseWriter struct {
+	gzipResponseWriter
+	http.Pusher
 }
 
 func (grw gzipResponseWriter) Write(data []byte) (int, error) {

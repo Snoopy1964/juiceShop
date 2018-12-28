@@ -9,10 +9,10 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/Snoopy1964/webapp/middleware"
 	"github.com/Snoopy1964/webapp/model"
 
 	"github.com/Snoopy1964/webapp/controller"
-	"github.com/Snoopy1964/webapp/middleware"
 
 	_ "github.com/lib/pq"
 )
@@ -30,6 +30,7 @@ func main() {
 	log.Printf("Connect to database: %v", db)
 	defer db.Close()
 	controller.Startup(templates)
+	//http.ListenAndServeTLS(":8000", "cert.pem", "key.pem", &middleware.TimeoutMiddleware{new(middleware.GzipMiddleware)})
 	http.ListenAndServe(":8000", &middleware.TimeoutMiddleware{new(middleware.GzipMiddleware)})
 }
 
