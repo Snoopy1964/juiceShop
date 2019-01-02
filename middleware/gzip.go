@@ -12,8 +12,6 @@ type GzipMiddleware struct {
 }
 
 func (gm *GzipMiddleware) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	// log.Println("Processing request ...", r.URL)
-	// log.Println("Processing request ...", r.Header)
 	if gm.Next == nil {
 		gm.Next = http.DefaultServeMux
 	}
@@ -24,7 +22,6 @@ func (gm *GzipMiddleware) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.Header().Add("Content-Encoding", "gzip")
-	//w.Header().Add("Content-Type", "text/html")
 	gzipwriter := gzip.NewWriter(w)
 	defer gzipwriter.Close()
 	var gzrw http.ResponseWriter
@@ -33,7 +30,8 @@ func (gm *GzipMiddleware) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			gzipResponseWriter: gzipResponseWriter{
 				ResponseWriter: w,
 				Writer:         gzipwriter,
-			}, Pusher: pusher,
+			},
+			Pusher: pusher,
 		}
 	} else {
 		gzrw = gzipResponseWriter{

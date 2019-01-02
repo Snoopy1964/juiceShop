@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"context"
+	"log"
 	"net/http"
 	"time"
 )
@@ -11,6 +12,7 @@ type TimeoutMiddleware struct {
 }
 
 func (tm TimeoutMiddleware) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	log.Printf("TimeoutMiddleware - Request URL: %v", r.URL)
 	if tm.Next == nil {
 		tm.Next = http.DefaultServeMux
 	}
@@ -28,6 +30,7 @@ func (tm TimeoutMiddleware) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	case <-ch:
 		return
 	case <-ctx.Done():
+		log.Printf("TimeoutMiddleware - Timeout Request: %v", r.Header)
 		w.WriteHeader(http.StatusRequestTimeout)
 	}
 }

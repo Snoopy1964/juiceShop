@@ -10,6 +10,6 @@ postgres:
     - ./init:/docker-entrypoint-initdb.d/
 
 # docker-compose -p juiceShopDB -f pd.yml up
-# docker exec -it <Container ID or Name> psql -U user accounts
-
+# cli: docker exec -it <Container ID or Name> psql -U user accounts
+# pgadmin: docker run -p 80:80 -e "PGADMIN_DEFAULT_EMAIL=user@domain.com" -e "PGADMIN_DEFAULT_PASSWORD=password" -d dpage/pgadmin4
     

@@ -30,15 +30,20 @@ func main() {
 	log.Printf("Connect to database: %v", db)
 	defer db.Close()
 	controller.Startup(templates)
-	//http.ListenAndServeTLS(":8000", "cert.pem", "key.pem", &middleware.TimeoutMiddleware{new(middleware.GzipMiddleware)})
-	http.ListenAndServe(":8000", &middleware.TimeoutMiddleware{new(middleware.GzipMiddleware)})
+	// http.ListenAndServeTLS(":8000", "cert.pem", "key.pem", nil)
+	http.ListenAndServeTLS(":8000", "cert.pem", "key.pem", new(middleware.TimeoutMiddleware))
+	// http.ListenAndServeTLS(":8000", "cert.pem", "key.pem", &middleware.TimeoutMiddleware{new(middleware.GzipMiddleware)})
+	// http.ListenAndServe(":8000", &middleware.TimeoutMiddleware{new(middleware.GzipMiddleware)})
 }
 
 func connectToDatabase() *sql.DB {
-	db, err := sql.Open("postgres", "postgres://user:password@localhost/accounts?sslmode=disable")
+	db, err := sql.Open("postgres", "postgres://user:passworld@localhost/accounts?sslmode=disable")
 	if err != nil {
 		log.Fatalln(fmt.Errorf("Unable to connect to database: %v", err))
 	}
+	p := db.Ping()
+	log.Printf("ping from DB: %v", p)
+
 	model.SetDatabase(db)
 	return db
 }
