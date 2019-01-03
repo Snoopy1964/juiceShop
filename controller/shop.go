@@ -54,5 +54,6 @@ func (s shop) handleCategory(w http.ResponseWriter, r *http.Request, categoryID 
 	log.Printf("handleCategory - categoryID = %v\n", categoryID)
 	products := model.GetProductsForCategory(categoryID)
 	vm := viewmodel.NewShopDetail(products)
+	w.Header().Add("Content-Type", "text/html")
 	s.categoryTemplate.Execute(w, vm)
 }

@@ -24,6 +24,7 @@ func (h home) registerRoutes() {
 func (h home) handleHome(w http.ResponseWriter, r *http.Request) {
 	log.Printf("handle Home - URL request: %v", r.URL)
 	if pusher, ok := w.(http.Pusher); ok {
+		log.Println("handleHome: Pusher called!")
 		pusher.Push("/css/app.css", &http.PushOptions{
 			Header: http.Header{"Conten-Type": []string{"test/css"}},
 		})

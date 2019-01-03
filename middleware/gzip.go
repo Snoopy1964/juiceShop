@@ -3,6 +3,7 @@ package middleware
 import (
 	"compress/gzip"
 	"io"
+	"log"
 	"net/http"
 	"strings"
 )
@@ -12,6 +13,7 @@ type GzipMiddleware struct {
 }
 
 func (gm *GzipMiddleware) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	log.Printf("GzipMiddleware - Request URL: %v", r.URL)
 	if gm.Next == nil {
 		gm.Next = http.DefaultServeMux
 	}
@@ -26,6 +28,7 @@ func (gm *GzipMiddleware) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	defer gzipwriter.Close()
 	var gzrw http.ResponseWriter
 	if pusher, ok := w.(http.Pusher); ok {
+		log.Printf("GzipMiddleware - pusher called: %v", r.URL)
 		gzrw = gzipPushResponseWriter{
 			gzipResponseWriter: gzipResponseWriter{
 				ResponseWriter: w,
