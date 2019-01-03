@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"context"
 	"log"
 	"net/http"
 	"time"
@@ -17,6 +16,14 @@ func (tm TimeoutMiddleware) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		tm.Next = http.DefaultServeMux
 	}
 
+	/* 	solution from stackoverflow
+	https://stackoverflow.com/questions/47218400/how-to-create-custom-timeout-handler-based-on-request-path
+	*/
+	/*delegate request to new timeout handler.*/
+	timeoutHandler := http.TimeoutHandler(tm.Next, 2*time.Second, `Request Timeout.`)
+	timeoutHandler.ServeHTTP(w, r)
+
+	/* old solution from trainings course
 	ctx := r.Context()
 	ctx, _ = context.WithTimeout(ctx, 2*time.Second)
 	r.WithContext(ctx)
@@ -30,7 +37,8 @@ func (tm TimeoutMiddleware) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	case <-ch:
 		return
 	case <-ctx.Done():
-		log.Printf("TimeoutMiddleware - Timeout Request: %v", r.Header)
+		log.Printf("TimeoutMiddleware - Timeout Request: \n%v", r)
 		w.WriteHeader(http.StatusRequestTimeout)
 	}
+	*/
 }
