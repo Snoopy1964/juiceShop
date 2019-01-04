@@ -20,7 +20,6 @@ import (
 )
 
 func main() {
-	// http.ListenAndServe(":8000", http.FileServer(http.Dir("webapp/public")))
 	dir, err := os.Getwd()
 	if err != nil {
 		log.Println(err)
